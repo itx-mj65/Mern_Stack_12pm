@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const express = require('express');
+const cors = require("cors")
 const app = express();
 
 
@@ -12,6 +13,7 @@ mongoose.connect('mongodb://localhost:27017/mydatabase12').then(() => {
 });
 
 app.use(express.json());
+app.use(cors())
 
 const userSchema = new mongoose.Schema({
     fullname: String,
@@ -22,9 +24,17 @@ const User = mongoose.model('User', userSchema);
 
 app.post('/register', async (req, res) => {
 
-    const user = new User({ name: "hello", email: "hello@example.com", password: "password123" });
-    await user.save();
-    res.status(201).send('User registered');
+    try {
+        const { fullname, email, password } = req.body
+
+        const user = new User({ fullname, email, password });
+        await user.save();
+        res.status(201).send('User registered');
+    } catch {
+        () => {
+            console.log("eror while saving data ")
+        }
+    }
 });
 
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
+import axios from 'axios'
 
 const App = () => {
 
@@ -9,11 +10,23 @@ const App = () => {
     const name = e.target.name;
     const value = e.target.value
     setData({ ...data, [name]: value })
-    console.log(data);
   }
 
-  const handlesubmit = (e) => {
+  const handlesubmit = async (e) => {
     e.preventDefault();
+    try {
+      axios.post("http://localhost:3000/register", data).then((res) => {
+     alert(res.data)
+      })
+
+
+
+    } catch {
+      () => {
+        console.log("there is error while sending from data ")
+      }
+    }
+
   }
 
   return (
