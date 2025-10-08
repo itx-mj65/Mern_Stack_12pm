@@ -22,6 +22,16 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', userSchema);
 
+
+app.get("/alluser", async (req, res) => {
+    const Alluser = await User.find()
+    res.json({
+        message: "data aceessed",
+        user: Alluser
+    })
+
+})
+
 app.post('/register', async (req, res) => {
 
     try {

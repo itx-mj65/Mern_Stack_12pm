@@ -1,10 +1,27 @@
 import React from 'react'
 import { useState } from 'react';
 import axios from 'axios'
+import { useEffect } from 'react';
 
 const App = () => {
 
   const [data, setData] = useState({ fullname: "", email: "", password: "" })
+  const [Allusers, setAllUsers] = useState()
+
+  useEffect(() => {
+
+    axios.get("http://localhost:3000/alluser").then((response) => {
+
+      setAllUsers(response.data.user)
+    }).catch(() => {
+      console.log("error while fething data ")
+    })
+
+
+  }, [])
+
+
+  // console.log(Allusers)
 
   const handlechange = (e) => {
     const name = e.target.name;
@@ -16,7 +33,7 @@ const App = () => {
     e.preventDefault();
     try {
       axios.post("http://localhost:3000/register", data).then((res) => {
-     alert(res.data)
+        alert(res.data)
       })
 
 
@@ -31,6 +48,16 @@ const App = () => {
 
   return (
     <div>
+      {
+        Allusers?.map((user) => {
+          return <div>
+            <h1>{user.fullname}</h1>
+            <p>{user.email}</p>
+            <p>{user.password}</p>
+          </div>
+
+        })
+      }
 
 
       <form onSubmit={handlesubmit} >
